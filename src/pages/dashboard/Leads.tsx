@@ -20,6 +20,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Modal } from "@/components/ui/modal";
 
 type LeadStatus = "new" | "contacted" | "qualified" | "converted";
 type LeadSource = "ai-search" | "manual" | "import";
@@ -151,6 +152,7 @@ const actionIconConfig: Record<string, { icon: typeof Clock; color: string }> = 
 
 const Leads = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const stats = [
     { label: "New", value: 24, subtitle: "Awaiting contact", icon: Inbox, iconBg: "bg-blue-50", iconColor: "text-blue-600" },
@@ -172,7 +174,7 @@ const Leads = () => {
             <Download className="h-4 w-4" />
             Export
           </Button>
-          <Button>
+          <Button onClick={() => setIsModalOpen(true)}>
             <Plus className="h-4 w-4" />
             Create Lead
           </Button>
@@ -360,6 +362,104 @@ const Leads = () => {
           </div>
         </div>
       </div>
+
+      {/* Create Lead Modal */}
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Create New Lead">
+        <form className="space-y-4">
+          {/* Lead Info */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Lead Information</h3>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-sm font-medium mb-1">Full Name</label>
+                <input
+                  type="text"
+                  className="w-full bg-background border rounded-lg text-sm py-2 px-3 focus:ring-2 focus:ring-primary focus:border-primary"
+                  placeholder="Enter full name"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Company</label>
+                <input
+                  type="text"
+                  className="w-full bg-background border rounded-lg text-sm py-2 px-3 focus:ring-2 focus:ring-primary focus:border-primary"
+                  placeholder="Enter company name"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Contact Info */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Contact</h3>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-sm font-medium mb-1">Email</label>
+                <input
+                  type="email"
+                  className="w-full bg-background border rounded-lg text-sm py-2 px-3 focus:ring-2 focus:ring-primary focus:border-primary"
+                  placeholder="Enter email address"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Location</label>
+                <input
+                  type="text"
+                  className="w-full bg-background border rounded-lg text-sm py-2 px-3 focus:ring-2 focus:ring-primary focus:border-primary"
+                  placeholder="Enter location"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Status & Source */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Status & Source</h3>
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-sm font-medium mb-1">Status</label>
+                <select className="w-full bg-background border rounded-lg text-sm py-2 px-3 focus:ring-2 focus:ring-primary focus:border-primary">
+                  <option value="new">New</option>
+                  <option value="contacted">Contacted</option>
+                  <option value="qualified">Qualified</option>
+                  <option value="converted">Converted</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Source</label>
+                <select className="w-full bg-background border rounded-lg text-sm py-2 px-3 focus:ring-2 focus:ring-primary focus:border-primary">
+                  <option value="ai-search">AI Search</option>
+                  <option value="manual">Manual Entry</option>
+                  <option value="import">Import</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Next Action */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Next Action</h3>
+            <div>
+              <label className="block text-sm font-medium mb-1">Action Title</label>
+              <input
+                type="text"
+                className="w-full bg-background border rounded-lg text-sm py-2 px-3 focus:ring-2 focus:ring-primary focus:border-primary"
+                placeholder="e.g., Initial outreach, Follow-up call"
+              />
+            </div>
+          </div>
+
+          {/* Form Actions */}
+          <div className="flex justify-end gap-3 pt-4 border-t">
+            <Button type="button" variant="outline" onClick={() => setIsModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button type="submit">
+              Create Lead
+            </Button>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };
